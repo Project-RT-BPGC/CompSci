@@ -1,3 +1,4 @@
+  
 // Function to read a text file one field at a time.
 //
 #include <SPI.h>
@@ -47,41 +48,44 @@ size_t readField(File* file, char* str, size_t size, char* delim) {
 void setup() {
   Serial.begin(9600);
 
+  
   // Initialize the SD.
   if (!SD.begin(CS_PIN)) errorHalt("begin failed");
 
   // Create or open the file.
-  file = SD.open("READTEST.TXT", FILE_WRITE);
+  file = SD.open("alt-az-O482020.txt", FILE_WRITE);
   if (!file) errorHalt("open failed");
 
   // Rewind file so test data is not appended.
   file.seek(0);
 
   // Write test data.
-  file.print(F(
-    "field_1_1,field_1_2,field_1_3\r\n"
-    "field_2_1,field_2_2,field_2_3\r\n"
-    "field_3_1,field_3_2\r\n"           // missing a field
-    "field_4_1,field_4_2,field_4_3\r\n"
-    "field_5_1,field_5_2,field_5_3"     // no delimiter
-    ));
+//  file.print(F(
+//    "field_1_1,field_1_2,field_1_3\r\n"
+//    "field_2_1,field_2_2,field_2_3\r\n"
+//    "field_3_1,field_3_2\r\n"           // missing a field
+//    "field_4_1,field_4_2,field_4_3\r\n"
+//    "field_5_1,field_5_2,field_5_3"     // no delimiter
+//    ));
 
   // Rewind the file for read.
   file.seek(0);
 
   size_t n;      // Length of returned field with delimiter.
   char str[20];  // Must hold longest field with delimiter and zero byte.
-  
+  int count=0;  // to add the serial floats 
+  float values[4]; //to make an array of 4 values
   // Read the file and print fields.
   while (true) {
-    n = readField(&file, str, sizeof(str), ",\n");
+    
+    n = readField(&file, str, sizeof(str), "\n- "); //added the - and a space too cause that is counted as a delimitor here
 
     // done if Error or at EOF.
     if (n == 0) break;
 
     // Print the type of delimiter.
-    if (str[n-1] == ',' || str[n-1] == '\n') {
-      Serial.print(str[n-1] == ',' ? F("comma: ") : F("endl:  "));
+    if (str[n-1] == '-' || str[n-1] == '\n' || str[n-1] == ' ') {
+//      Serial.print(str[n-1] == ',' ? F("comma: ") : F("endl:  ")); not printing what it is
       
       // Remove the delimiter.
       str[n-1] = 0;
@@ -91,9 +95,25 @@ void setup() {
     }
     // Print the field.
     Serial.println(str);
+
+    if (count % 3 !=0){
+      strf = (float) str //converting the string to float 
+      cord[count]=strf; //the values keep o gettig added to the cord string
+    }
   }
+
+  // the expected output should be 
+//  6:25:1
+//  40.192... (the initial value of theta)
+//  283.482... (the initial value of phi)
+//  6:50:41
+//  46.18300932842953  (the final value of theta)
+//  286.7100693897322   (the final value of phi)
+//  and the array will be the set of values
+  
   file.close();
 }
 //------------------------------------------------------------------------------
 void loop() {
 }
+
