@@ -1,4 +1,4 @@
-<img width="100" alt="portfolio_view" src="https://github.com/Project-RT-BPGC/Radio-Telescope/blob/master/ProjectRT.jpg">
+<img width="100" alt="portfolio_view" src="https://github.com/Project-RT-BPGC/Radio-Telescope/blob/master/images/rt.png">
 
 # Radio-Telescope
 ![version](https://img.shields.io/badge/version-1.0.0-blue.svg) ![license](https://img.shields.io/badge/license-MIT-blue.svg)
