@@ -101,9 +101,10 @@ void setup() {
   char str[20];  // Must hold longest field with delimiter and zero byte.
   int count=0;  // to add the serial floats 
   float values[4]; //to make an array of 4 values
+  
   // Read the file and print fields.
   while (true) {
-    
+    count = count + 1;
     n = readField(&file, str, sizeof(str), "\n- "); //added the - and a space too cause that is counted as a delimitor here
 
     // done if Error or at EOF.
